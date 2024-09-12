@@ -6,6 +6,6 @@ import SwiftSyntaxMacros
 @main
 struct RMacrosPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-        FeatureTestMacros.self
+        FeatureTestMacro.self
     ]
 }
