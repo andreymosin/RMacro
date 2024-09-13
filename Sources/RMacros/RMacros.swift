@@ -3,6 +3,6 @@
 
 import SwiftUI
 
-@attached(member)
+@attached(member, names: arbitrary)
 public macro FeatureTest<R, V: View>() = #externalMacro(module: "RMacrosMacros", type: "FeatureTestMacro")
 
