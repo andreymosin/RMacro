@@ -19,8 +19,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.0"),
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "1.12.1")),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -36,8 +35,7 @@ let package = Package(
 
         // Library that exposes a macro as part of its API, which is used in client programs.
         .target(name: "RMacros", dependencies: [
-            "RMacrosMacros",
-            .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            "RMacrosMacros"
         ]),
 
         // A client of the library, which is able to use the macro in its own code.
