@@ -28,7 +28,7 @@ public struct FeatureTestMacro: MemberMacro {
             featureTypeAlias.as(DeclSyntax.self),
             stateTypeAlias.as(DeclSyntax.self),
             takeSnapshot(reducer: reducer, view: view).as(DeclSyntax.self),
-            makeSut(reducer: reducer).as(DeclSyntax.self)
+            makeSutCodeBlock(reducer: reducer).as(DeclSyntax.self)
         ]
             .compactMap { $0 }
     }
@@ -102,32 +102,20 @@ testName: testName
 
 // MARK: - makeSut
 extension FeatureTestMacro {
-/*
- private func makeSut(state: State = .init()) -> TestStoreOf<BrowseTabFeature> {
-         .init(initialState: state, reducer: BrowseTabFeature.init)
-     }
- */
-
-    static func makeSut(reducer: GenericArgumentListSyntax.Element) -> FunctionDeclSyntax {
-        .init(name: "makeSut", signature: sutSignature(reducer: reducer))
+    // TODO: - Refactor to swift-syntax
+    static func makeSutCodeBlock(reducer: GenericArgumentListSyntax.Element) -> DeclSyntax {
+        .init(stringLiteral:
+"""
+func makeSut(state: State? = nil, deps: ((inout DependencyValues) throws -> Void)? = nil) throws -> TestStoreOf<\(reducer.argument.description)> {
+    if let deps {
+        return try withDependencies(deps) {
+            .init(initialState: state ?? .init(), reducer: \(reducer.argument.description).init)
+        }
     }
 
-    private static func sutSignature(
-        reducer: GenericArgumentListSyntax.Element
-    ) -> FunctionSignatureSyntax {
-        .init(
-            parameterClause: .init(
-                parameters:
-                        .init(
-                            [
-                                .init(
-                                    firstName: .identifier("state"),
-                                    colon: .colonToken(trailingTrivia: .spaces(1)),
-                                    type: TypeSyntax(stringLiteral: "State?")
-                                )
-                            ]
-                        )
-            )
+    return .init(initialState: state ?? .init(), reducer: \(reducer.argument.description).init)
+}
+"""
         )
     }
 }

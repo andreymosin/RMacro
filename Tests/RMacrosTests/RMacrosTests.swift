@@ -41,6 +41,16 @@ class BrowseTabFeatureTests: XCTestCase {
                         testName: testName
                     )
                 }
+            
+                func makeSut(state: State? = nil, deps: ((inout DependencyValues) throws -> Void)? = nil) throws -> TestStoreOf<BrowseTabFeature> {
+                    if let deps {
+                        return try withDependencies(deps) {
+                            .init(initialState: state ?? .init(), reducer: BrowseTabFeature.init)
+                        }
+                    }
+
+                    return .init(initialState: state ?? .init(), reducer: BrowseTabFeature.init)
+                }
             }
             """,
             macros: testMacros
