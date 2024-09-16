@@ -76,7 +76,6 @@ extension FeatureTestMacro {
         )
     }
 
-
     private static func body(
         reducer: GenericArgumentListSyntax.Element,
         view: GenericArgumentListSyntax.Element
